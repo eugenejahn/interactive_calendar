@@ -34,6 +34,7 @@ class MonthPanel extends JPanel implements ActionListener {
 
   private WeekPanel weekPanel;
   
+  
   void set(WeekPanel tmp){ 
         weekPanel = tmp;
    }
@@ -51,14 +52,27 @@ class MonthPanel extends JPanel implements ActionListener {
     this.add(monthPanel);
   }
   
+  
   protected JPanel createTitleGUI() {
     JPanel titlePanel = new JPanel(true);
     titlePanel.setLayout(new FlowLayout());
     titlePanel.setBackground(Color.WHITE);
 
+    
+    
+    JButton nextPage = new JButton("lastPage");
+    JButton lastPage = new JButton("nextPage");
+    
+    nextPage.addActionListener(this );
+    lastPage.addActionListener(this );
+    
+    titlePanel.add(nextPage);
     JLabel label = new JLabel(monthNames[month] + " " + year);
     label.setForeground(SystemColor.activeCaption);
     titlePanel.add(label, BorderLayout.CENTER);
+    
+    titlePanel.add(lastPage);
+    
     return titlePanel;
   }
 
@@ -108,7 +122,7 @@ class MonthPanel extends JPanel implements ActionListener {
       if ((lMonth == month) && (lYear == year)) {
         int lDay = iterator.get(Calendar.DAY_OF_MONTH);
         dayLabel.setText(Integer.toString(lDay));
-        JButton button = new JButton();
+        JButton button = new JButton("dayButton");
         button.setText(Integer.toString(lDay));
         button.setOpaque(false);
 //      button.setContentAreaFilled(false);
@@ -153,13 +167,61 @@ class MonthPanel extends JPanel implements ActionListener {
 
     
   
-  public void actionPerformed(ActionEvent a) {
-        JButton button = (JButton) a.getSource();
+  public void actionPerformed(ActionEvent e) {
+      
+      System.out.println(e.getActionCommand());
+      if (e.getActionCommand().equals("nextPage")) {
+          System.out.println(month);
+          
+          if(month == 11){
+              month = 0;
+              year = year + 1;
+          }else{
+              month = month+ 1;
+          }
+          
+    
+          this.removeAll();
+          this.revalidate();
+          this.repaint();
+          
+          
+          JPanel monthPanel = new JPanel(true);
+          monthPanel.setLayout(new BorderLayout());
+          monthPanel.add(createTitleGUI(), BorderLayout.NORTH);
+          monthPanel.add(createDaysGUI(), BorderLayout.SOUTH);
+          this.add(monthPanel);
+
+        } else if(e.getActionCommand().equals("lastPage")){
+          
+          
+          if(month == 0){
+              month = 11;
+              year = year- 1;
+          }else{
+              month = month-1;
+          }
+    
+          this.removeAll();
+          this.revalidate();
+          this.repaint();
+          
+          
+          JPanel monthPanel = new JPanel(true);
+          monthPanel.setLayout(new BorderLayout());
+          monthPanel.add(createTitleGUI(), BorderLayout.NORTH);
+          monthPanel.add(createDaysGUI(), BorderLayout.SOUTH);
+          this.add(monthPanel);
+          
+        }else{
+        System.out.println("Button1 has been clicked");
+        JButton button = (JButton) e.getSource();
         System.out.println(button.getText());
       
         CardLayout cardLayout = (CardLayout) (contentPanel.getLayout());
         cardLayout.show(contentPanel, "Panel2");
         weekPanel.buttonText(button.getText());
+        }
     }
   
 }
