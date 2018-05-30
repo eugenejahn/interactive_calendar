@@ -2,11 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class CldPanel extends JPanel{
-//    public CldPanel ()  {
-//       DrawingPanel panel = new DrawingPanel(700,1000);
-//       Graphics g = panel.getGraphics();
-//       rect(g);
-//    }
+
    public void paintComponent (Graphics g) {
       super.paintComponent(g);
       g.setColor(Color.BLACK);
@@ -32,4 +28,5 @@ public class CldPanel extends JPanel{
       g.drawString("Saturday",610,15);
       g.drawString("Sunday",710,15);      
    }
+  
 }
