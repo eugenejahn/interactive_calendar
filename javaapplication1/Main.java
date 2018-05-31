@@ -34,11 +34,14 @@ public class Main{
     
     MonthPanel monthPanel = new MonthPanel(contentPanel, month,day, year);
     
+    
+    
     WeekPanel weekPanel = new WeekPanel(contentPanel);
     
     monthPanel.set(weekPanel);
     
     JFrame frame = new JFrame();
+    
     contentPanel.add(monthPanel, "Panel1");
     contentPanel.add(weekPanel, "Panel2");
     

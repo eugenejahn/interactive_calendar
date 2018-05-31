@@ -121,6 +121,8 @@ class MonthPanel extends JPanel implements ActionListener {
 
       if ((lMonth == month) && (lYear == year)) {
         int lDay = iterator.get(Calendar.DAY_OF_MONTH);
+        
+        
         dayLabel.setText(Integer.toString(lDay));
         JButton button = new JButton("dayButton");
         button.setText(Integer.toString(lDay));
@@ -214,13 +216,16 @@ class MonthPanel extends JPanel implements ActionListener {
           this.add(monthPanel);
           
         }else{
+            
         System.out.println("Button1 has been clicked");
         JButton button = (JButton) e.getSource();
-        System.out.println(button.getText());
+//        System.out.println(year + " "+ (month+1)+ ""+button.getText());
       
         CardLayout cardLayout = (CardLayout) (contentPanel.getLayout());
         cardLayout.show(contentPanel, "Panel2");
         weekPanel.buttonText(button.getText());
+        weekPanel.setDate(year,(month+1),Integer.parseInt(button.getText()));
+        
         }
     }
   
