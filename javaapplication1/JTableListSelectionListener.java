@@ -26,13 +26,13 @@ public class JTableListSelectionListener {
 
     String[] columnTitles = { "A", "B", "C", "D" };
     Object[][] rowData = { 
-        { "", "12", "13", "14" }, 
-        { "21", "22", "23", "24" },
+        { "", "", "", "" }, 
+        { "", "", "", "" },
         
-        { "31", "32", "33", "34" },
-        { "31", "32", "33", "34" },
-        { "31", "32", "33", "34" },
-        { "41", "42", "44", "44" } };
+        { "", "", "", "34" },
+        { "", "", "", "34" },
+        { "", "", "33", "34" },
+        { "", "", "44", "44" } };
 
     table = new JTable(rowData, columnTitles);
 
@@ -60,8 +60,8 @@ public class JTableListSelectionListener {
 //        }
         selectedData = (String) table.getValueAt(selectedRow, selectedColumns);
         System.out.println("Selected: " + selectedData + "i and j " + selectedRow + selectedColumns);
-        ColorRenderer tableCellRendererComponent = new ColorRenderer();
-        Component a = tableCellRendererComponent.getTableCellRendererComponent(table,selectedData,true,true,selectedRow,selectedColumns)
+        table.getColumnModel().getColumn(selectedColumns).setCellRenderer(new ColorRenderer());
+
       }
 
     });
@@ -83,18 +83,27 @@ class ColorRenderer extends DefaultTableCellRenderer
     {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-        if (isSelected)
+        if (isSelected){
             setBackground( table.getSelectionBackground() );
+//            setBackground( Color.BLUE );
+        }
         else
         {
             setBackground( table.getBackground() );
 
             try
             {
-                int number = Integer.parseInt( value.toString() );
+                String boxValue =  value.toString() ;
 
-                if (number > 24)
+                if (boxValue.equalsIgnoreCase("r")){
                     setBackground( Color.RED );
+                }else if (boxValue.equalsIgnoreCase("b")){
+                    setBackground( Color.BLUE );
+                }
+                else if (boxValue.equalsIgnoreCase("g")){
+                    setBackground( Color.GREEN );
+                }
+//                    setBackground( Color.RED );
             }
             catch(Exception e) {}
         }
