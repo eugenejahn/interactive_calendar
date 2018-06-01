@@ -25,10 +25,10 @@ public class JTableListSelectionListener {
     final JTable table;
 
     String[] columnTitles = { "A", "B", "C", "D" };
-    Object[][] rowData = { 
-        { "", "12", "13", "14" }, 
+    Object[][] rowData = {
+        { "", "12", "13", "14" },
         { "21", "22", "23", "24" },
-        
+
         { "31", "32", "33", "34" },
         { "31", "32", "33", "34" },
         { "31", "32", "33", "34" },
@@ -49,19 +49,19 @@ public class JTableListSelectionListener {
 
         int tmpi = 0;
         int tmpj = 0;
-        
+
 //        for (int i = 0; i < selectedRow.length; i++) {
 //          for (int j = 0; j < selectedColumns.length; j++) {
 //            selectedData = (String) table.getValueAt(selectedRow[i], selectedColumns[j]);
 //            tmpi = i;
 //            tmpj = j;
 //          }
-//          
+//
 //        }
         selectedData = (String) table.getValueAt(selectedRow, selectedColumns);
         System.out.println("Selected: " + selectedData + "i and j " + selectedRow + selectedColumns);
         ColorRenderer tableCellRendererComponent = new ColorRenderer();
-        Component a = tableCellRendererComponent.getTableCellRendererComponent(table,selectedData,true,true,selectedRow,selectedColumns)
+        Component a = tableCellRendererComponent.getTableCellRendererComponent(table,selectedData,true,true,selectedRow,selectedColumns);
       }
 
     });
