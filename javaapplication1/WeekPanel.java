@@ -15,6 +15,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -28,6 +30,41 @@ public class WeekPanel extends JPanel{
     
     public WeekPanel(JPanel panel) 
     {
+        
+        
+        
+        Object rowData[][] =  { {"1","","","","","","",""},
+            {"2","","","","","","",""},
+            {"3","","","","","","",""},
+            {"4","","","","","","",""},
+            {"5","","","","","","",""},
+            {"6","","","","","","",""},
+            {"7","","","","","","",""},
+            {"8","","","","","","",""},
+            {"9","","","","","","",""},
+            {"10","","","","","","",""},
+            {"11","","","","","","",""},
+            {"12","","","","","","",""},
+            {"13","","","","","","",""},
+            {"14","","","","","","",""},
+            {"15","","","","","","",""},
+            {"16","","","","","","",""},
+            {"17","","","","","","",""},
+            {"18","","","","","","",""},
+            {"19","","","","","","",""},
+            {"20","","","","","","",""},
+            {"9","","","","","","",""},
+            {"10","","","","","","",""},
+            {"11","","","","","","",""},
+            {"12","","","","","","",""},
+    };
+
+    Object columnNames[] = { "Time/Date", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+    JTable table = new JTable(rowData, columnNames);
+    table.setRowHeight(35);
+    
+    JScrollPane scrollPane = new JScrollPane(table);
+    
         contentPane = panel;
 //        setOpaque(true);
 //        setBackground(Color.BLUE);
@@ -42,33 +79,10 @@ public class WeekPanel extends JPanel{
             }
         });
         add(jcomp4);
+        add(scrollPane);
     }
     
-    public void paintComponent (Graphics g) {
-      super.paintComponent(g);
-      g.setColor(Color.BLACK);
-      g.drawLine(0,0,0,1000);
-      for(int i = 1; i <= 7; i++) {
-          g.drawRect(i*100,0,100,1000);
-      }
-      for(int j = 1; j <= 12; j++) {
-         g.drawString ("" + j + "am",10,40*j);
-      }
-      for(int j = 13; j <= 24; j++) {
-         g.drawString ("" + j + "pm",10,40*j);
-      }
-      for(int k = 0; k < 24; k++) {
-         g.drawLine(0,k*40 + 20,800,k*40 + 20);
-      }
-      g.drawLine(0,20,800,20);
-      g.drawString("Monday",110,15);
-      g.drawString("Tuesday",210,15);
-      g.drawString("Wednesday",310,15);
-      g.drawString("Thursday",410,15);
-      g.drawString("Friday",510,15);
-      g.drawString("Saturday",610,15);
-      g.drawString("Sunday",710,15);      
-   }
+   
     
     public void buttonText(String tmp){
         jcomp4.setText(tmp);
