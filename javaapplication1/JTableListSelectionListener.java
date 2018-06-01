@@ -74,8 +74,10 @@ public class JTableListSelectionListener {
   }
 
 }
-// test
 
+
+
+// change the color by this class
 class ColorRenderer extends DefaultTableCellRenderer
 {
     @Override
@@ -84,6 +86,7 @@ class ColorRenderer extends DefaultTableCellRenderer
     {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
+        // if the cell is selected then the color should be same as backgorund
         if (isSelected){
             setBackground( table.getSelectionBackground() );
 //            setBackground( Color.BLUE );
@@ -95,7 +98,7 @@ class ColorRenderer extends DefaultTableCellRenderer
             try
             {
                 String boxValue =  value.toString() ;
-
+                // if the box value equal this then change color to this
                 if (boxValue.equalsIgnoreCase("r")){
                     setBackground( Color.RED );
                 }else if (boxValue.equalsIgnoreCase("b")){

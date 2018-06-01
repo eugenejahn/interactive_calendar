@@ -17,6 +17,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -62,6 +65,8 @@ public class WeekPanel extends JPanel{
     Object columnNames[] = { "Time/Date", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
     JTable table = new JTable(rowData, columnNames);
     table.setRowHeight(35);
+  
+    tableListener(table);
     
     JScrollPane scrollPane = new JScrollPane(table);
     
@@ -78,7 +83,9 @@ public class WeekPanel extends JPanel{
                 cardLayout.next(contentPane);
             }
         });
+        // add the go back button
         add(jcomp4);
+        // add the week panel into the panel
         add(scrollPane);
     }
     
@@ -88,6 +95,40 @@ public class WeekPanel extends JPanel{
         jcomp4.setText(tmp);
     }
     
+    // it is the litener and changes the color of the cell
+    public void tableListener(JTable table){
+    table.setCellSelectionEnabled(true);
+    ListSelectionModel cellSelectionModel = table.getSelectionModel();
+    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+      public void valueChanged(ListSelectionEvent e) {
+        String selectedData = null;
+
+        int selectedRow = table.getSelectedRows()[0];
+        int selectedColumns = table.getSelectedColumns()[0];
+
+        int tmpi = 0;
+        int tmpj = 0;
+        
+//        for (int i = 0; i < selectedRow.length; i++) {
+//          for (int j = 0; j < selectedColumns.length; j++) {
+//            selectedData = (String) table.getValueAt(selectedRow[i], selectedColumns[j]);
+//            tmpi = i;
+//            tmpj = j;
+//          }
+//          
+//        }
+        selectedData = (String) table.getValueAt(selectedRow, selectedColumns);
+        System.out.println("Selected: " + selectedData + "i and j " + selectedRow + selectedColumns);
+        table.getColumnModel().getColumn(selectedColumns).setCellRenderer(new ColorRenderer());
+
+      }
+
+    });
+    }
+    
+    // the date data is passed by this method, so the values of year month and day are value of the date that user click 
     public void setDate(int year , int month , int day){
         System.out.println(month + " " + day + "" + year);
         calendar = new GregorianCalendar(year,month-1,day);
@@ -100,3 +141,6 @@ public class WeekPanel extends JPanel{
         return (new Dimension(500, 500));
     }
 }
+
+
+
