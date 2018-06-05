@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
@@ -78,6 +79,7 @@ class MonthPanel extends JPanel implements ActionListener {
 
   protected JPanel createDaysGUI() {
     JPanel dayPanel = new JPanel(true);
+    
     dayPanel.setLayout(new GridLayout(0, dayNames.length));
 
     Calendar today = Calendar.getInstance();

@@ -5,14 +5,17 @@
  */
 package javaapplication1;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -33,6 +36,10 @@ public class WeekPanel extends JPanel{
     
     public WeekPanel(JPanel panel) 
     {
+        
+        setBackground(Color.GREEN);
+        setLayout(new BorderLayout());
+ 
         
         
         
@@ -68,7 +75,12 @@ public class WeekPanel extends JPanel{
   
     tableListener(table);
     
+
+    
     JScrollPane scrollPane = new JScrollPane(table);
+    scrollPane.setMaximumSize(new Dimension(500,10000));
+    
+    
     
         contentPane = panel;
 //        setOpaque(true);
@@ -84,9 +96,13 @@ public class WeekPanel extends JPanel{
             }
         });
         // add the go back button
-        add(jcomp4);
+        
+        
+        
         // add the week panel into the panel
-        add(scrollPane);
+        add(scrollPane,BorderLayout.WEST);
+        add(jcomp4,BorderLayout.EAST);
+        
     }
     
    

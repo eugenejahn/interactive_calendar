@@ -42,6 +42,7 @@ public class Main{
     
     JFrame frame = new JFrame();
     
+    
     contentPanel.add(monthPanel, "Panel1");
     contentPanel.add(weekPanel, "Panel2");
     
@@ -50,7 +51,7 @@ public class Main{
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    frame.setLayout(new FlowLayout());
     frame.setContentPane(contentPanel);
-    frame.pack();
+    frame.setSize(800,600);
 //    frame.setLocationByPlatform(true);
     frame.setVisible(true);
     }
