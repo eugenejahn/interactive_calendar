@@ -13,6 +13,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.BoxLayout;
@@ -33,6 +34,9 @@ public class WeekPanel extends JPanel{
     private JButton jcomp4;
     private JPanel contentPane;
     private Calendar calendar;
+    private JTable table;
+    private DateData firstDateData;
+    private String firstDate;
     
     public WeekPanel(JPanel panel) 
     {
@@ -63,14 +67,14 @@ public class WeekPanel extends JPanel{
             {"18","","","","","","",""},
             {"19","","","","","","",""},
             {"20","","","","","","",""},
-            {"9","","","","","","",""},
-            {"10","","","","","","",""},
-            {"11","","","","","","",""},
-            {"12","","","","","","",""},
+            {"21","","","","","","",""},
+            {"22","","","","","","",""},
+            {"23","","","","","","",""},
+            {"24","","","","","","",""},
     };
 
     Object columnNames[] = { "Time/Date", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-    JTable table = new JTable(rowData, columnNames);
+    table = new JTable(rowData, columnNames);
     table.setRowHeight(35);
   
     tableListener(table);
@@ -91,6 +95,17 @@ public class WeekPanel extends JPanel{
         {
             public void actionPerformed(ActionEvent e)
             {
+                StoreData store = new StoreData();
+
+                String[] tmp = firstDateData.getData(); 
+                for(int i =0;  i <24;i ++){
+                    tmp[i] = (String) table.getValueAt(i,1);
+                }
+                firstDateData.setData(tmp);
+                System.out.println("=---------------------------------------=");
+                System.out.println(firstDateData.getDate());
+                System.out.println(Arrays.toString(firstDateData.getData()));
+                store.crunchifyWriteToFile(firstDate, firstDateData);
                 CardLayout cardLayout = (CardLayout) contentPane.getLayout();
                 cardLayout.next(contentPane);
             }
@@ -149,6 +164,18 @@ public class WeekPanel extends JPanel{
         System.out.println(month + " " + day + "" + year);
         calendar = new GregorianCalendar(year,month-1,day);
         System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
+        firstDate = year+"-"+month+"-"+day;
+        firstDateData = getDateData(year+"-"+month+"-"+day);
+        
+        for(int i =0;  i <12;i ++){
+            table.setValueAt( firstDateData.getData()[i],i,1);
+        }
+        table.getColumnModel().getColumn(1).setCellRenderer(new ColorRenderer());
+    }
+    
+    public DateData getDateData(String date){
+        StoreData store = new StoreData();
+        return store.crunchifyReadFromFile(date);
     }
 
     @Override

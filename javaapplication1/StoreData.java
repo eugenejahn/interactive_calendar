@@ -18,7 +18,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
  
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
  
 /**
  * @author Crunchify.com 
@@ -27,106 +34,105 @@ import com.google.gson.stream.JsonReader;
  */
  
 public class StoreData {
+    
+        
  
-	private static String crunchify_file_location = "/crunchify.txt";
+
 	private static Gson gson = new Gson();
  
-	// CrunchifyComapny Class with two fields
-	// - Employees
-	// - CompanyName
-	private static class CrunchifyCompany {
-		private int employees;
-		private String companyName;
- 
-		public int getEmployees() {
-			return employees;
-		}
- 
-		public void setEmployees(int employees) {
-			this.employees = employees;
-		}
- 
-		public String getCompanyName() {
-			return companyName;
-		}
- 
-		public void setCompanyName(String companyName) {
-			this.companyName = companyName;
-		}
- 
-	}
- 
-	// Main Method
-	public static void main(String[] args) {
-		CrunchifyCompany crunchify = new CrunchifyCompany();
-		crunchify.setCompanyName("Crunchify.com");
-		crunchify.setEmployees(4);
- 
-		// Save data to file
-		crunchifyWriteToFile(gson.toJson(crunchify));
-		
-		// Retrieve data from file
-		crunchifyReadFromFile();
-	}
+
  
 	// Save to file Utility
-	private static void crunchifyWriteToFile(String myData) {
+	public  void crunchifyWriteToFile(String date, DateData data) {
+		
+                    String crunchify_file_location = "data/"+ date + ".txt";
+                    
+                    File file = new File(crunchify_file_location);
+                    
+
+//                        System.out.println("foundddddddddddddd");
+//                        file.delete();
+//
+//                    file = new File(crunchify_file_location);
+//                    try {
+//                        file.createNewFile();
+//                    } catch (IOException ex) {
+//			Logger.getLogger(StoreData.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+                    
+                    System.out.println(data.getDate());
+                    
+                    
+                    try {
+                        // Convenience class for writing character files
+                        FileWriter crunchifyWriter;
+                        crunchifyWriter = new FileWriter(file.getAbsoluteFile(), false);
+                        
+                        // Writes text to a character-output stream
+                        BufferedWriter bufferWriter = new BufferedWriter(crunchifyWriter);
+                        bufferWriter.write(gson.toJson(data));
+                        bufferWriter.close();
+                        
+                        log("Company data saved at file location: " + crunchify_file_location + " Data: " + data + "\n");
+                    } catch (IOException e) {
+                        log("Hmm.. Got an error while saving Company data to file " + e.toString());
+                    }
+                    file.exists();
+                
+	}
+ 
+	// Read From File Utility
+	public  DateData crunchifyReadFromFile(String date) {
+                DateData result = new DateData();
+                result.setDate(date);
+                result.setData(new String[] {"","","","","","","","","","","","","","","","","","","","","","","",""});
+                String crunchify_file_location = "data/"+ date + ".txt"; 
 		File crunchifyFile = new File(crunchify_file_location);
-		if (!crunchifyFile.exists()) {
+		if (!crunchifyFile.exists()){
 			try {
 				File directory = new File(crunchifyFile.getParent());
 				if (!directory.exists()) {
 					directory.mkdirs();
 				}
 				crunchifyFile.createNewFile();
+                                FileWriter crunchifyWriter;
+                                crunchifyWriter = new FileWriter(crunchifyFile.getAbsoluteFile(), true);
+ 
+			// Writes text to a character-output stream
+            			BufferedWriter bufferWriter = new BufferedWriter(crunchifyWriter);
+                		bufferWriter.write(gson.toJson(result));
+                        	bufferWriter.close();
 			} catch (IOException e) {
 				log("Excepton Occured: " + e.toString());
 			}
-		}
+                }else{
  
-		try {
-			// Convenience class for writing character files
-			FileWriter crunchifyWriter;
-			crunchifyWriter = new FileWriter(crunchifyFile.getAbsoluteFile(), true);
- 
-			// Writes text to a character-output stream
-			BufferedWriter bufferWriter = new BufferedWriter(crunchifyWriter);
-			bufferWriter.write(myData.toString());
-			bufferWriter.close();
- 
-			log("Company data saved at file location: " + crunchify_file_location + " Data: " + myData + "\n");
-		} catch (IOException e) {
-			log("Hmm.. Got an error while saving Company data to file " + e.toString());
-		}
-	}
- 
-	// Read From File Utility
-	public static void crunchifyReadFromFile() {
-		File crunchifyFile = new File(crunchify_file_location);
-		if (!crunchifyFile.exists())
-			log("File doesn't exist");
- 
-		InputStreamReader isReader;
-		try {
+                    InputStreamReader isReader;
+                    try {
 			isReader = new InputStreamReader(new FileInputStream(crunchifyFile), "UTF-8");
  
 			JsonReader myReader = new JsonReader(isReader);
-			CrunchifyCompany company = gson.fromJson(myReader, CrunchifyCompany.class);
+                        
+                        result = gson.fromJson(myReader, DateData.class);
+                        
+                        
  
-			log("Company Name: " + company.getCompanyName());
-			Integer employee = company.getEmployees();
-			log("# of Employees: " + employee.toString());
- 
-		} catch (Exception e) {
-			log("error load cache from file " + e.toString());
-		}
+                    } catch (Exception e) {
+                        
+                    	log("error load cache from file " + e.toString());
+                    }
+                }
  
 		log("\nComapny Data loaded successfully from file " + crunchify_file_location);
+                crunchifyFile.exists();
+                return result;
  
 	}
  
-	private static void log(String string) {
+	private  void log(String string) {
 		System.out.println(string);
 	}
  
 }
+
+
