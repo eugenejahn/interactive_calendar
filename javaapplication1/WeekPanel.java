@@ -8,6 +8,7 @@ package javaapplication1;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -24,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -31,23 +33,18 @@ import javax.swing.event.ListSelectionListener;
  */
 public class WeekPanel extends JPanel{
     
-    private JButton jcomp4;
+    private JButton returnButton;
     private JPanel contentPane;
     private Calendar calendar;
     private JTable table;
     private DateData firstDateData;
     private String firstDate;
     
-    public WeekPanel(JPanel panel) 
-    {
-        
-        setBackground(Color.GREEN);
-        setLayout(new BorderLayout());
- 
-        
-        
-        
-        Object rowData[][] =  { {"1","","","","","","",""},
+    private DateData[] weekData = new DateData[7];
+    private String [] weekDate = new String[7];
+    private Object weekColumnNames[] = { "Time/Date", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun" };
+    
+    private Object weekRowData[][] =  { {"1","","","","","","",""},
             {"2","","","","","","",""},
             {"3","","","","","","",""},
             {"4","","","","","","",""},
@@ -72,118 +69,160 @@ public class WeekPanel extends JPanel{
             {"23","","","","","","",""},
             {"24","","","","","","",""},
     };
-
-    Object columnNames[] = { "Time/Date", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-    table = new JTable(rowData, columnNames);
-    table.setRowHeight(35);
+    
+    public WeekPanel(JPanel panel) 
+    {
+        
+        setBackground(Color.GREEN);
+        setLayout(new BorderLayout());
+        
+        table = new JTable(weekRowData, weekColumnNames);
+        table.setRowHeight(25);
+        table.setPreferredSize(new Dimension(800,650));
+        table.setBackground(Color.LIGHT_GRAY);
   
-    tableListener(table);
-    
-
-    
-    JScrollPane scrollPane = new JScrollPane(table);
-    scrollPane.setMaximumSize(new Dimension(500,10000));
-    
-    
+        tableListener();
+   
+        JScrollPane scrollPane = new JScrollPane(table);
+        
+        scrollPane.setPreferredSize(new Dimension(800,650));
     
         contentPane = panel;
-//        setOpaque(true);
-//        setBackground(Color.BLUE);
-        //construct components
-        jcomp4 = new JButton ("openNewWindow");
-        jcomp4.addActionListener( new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                StoreData store = new StoreData();
 
-                String[] tmp = firstDateData.getData(); 
-                for(int i =0;  i <24;i ++){
-                    tmp[i] = (String) table.getValueAt(i,1);
-                }
-                firstDateData.setData(tmp);
-                System.out.println("=---------------------------------------=");
-                System.out.println(firstDateData.getDate());
-                System.out.println(Arrays.toString(firstDateData.getData()));
-                store.crunchifyWriteToFile(firstDate, firstDateData);
-                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-                cardLayout.next(contentPane);
-            }
-        });
-        // add the go back button
-        
-        
+        returnButton = new JButton ("Return");
+        buttonText("Return");
+        returnButton.setSize(10, 10);
+        returnButtonListener();
+   
+        JTable colorTable = new JTable(new Object[][] {{"","",""},{"","",""}}, new Object[] {"COLOR","NAME","hih"});
+        colorTable.setBackground(Color.cyan);
+        JScrollPane colorScrollPane = new JScrollPane(colorTable);
+
         
         // add the week panel into the panel
         add(scrollPane,BorderLayout.WEST);
-        add(jcomp4,BorderLayout.EAST);
+        add(colorScrollPane,BorderLayout.CENTER);
+       add(returnButton,BorderLayout.EAST); 
+        
+        
         
     }
     
    
     
     public void buttonText(String tmp){
-        jcomp4.setText(tmp);
+        returnButton.setText(tmp);
+    }
+    
+    private void returnButtonListener(){
+    	returnButton.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                StoreData store = new StoreData();
+                for(int j = 0; j<7;j++){
+                	String[] tmp = weekData[j].getData(); 
+                    for(int i =0;  i <24;i ++){
+                        tmp[i] = (String) table.getValueAt(i,j+1);
+                    }
+                    weekData[j].setData(tmp);
+//                    System.out.println("=---------------------------------------=");
+//                    System.out.println(weekData[j].getDate());
+//                    System.out.println(Arrays.toString(weekData[j].getData()));
+                    store.crunchifyWriteToFile(weekDate[j], weekData[j]);
+                	
+                }
+                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+                cardLayout.next(contentPane);
+            }
+        });
     }
     
     // it is the litener and changes the color of the cell
-    public void tableListener(JTable table){
-    table.setCellSelectionEnabled(true);
-    ListSelectionModel cellSelectionModel = table.getSelectionModel();
-    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    private void tableListener(){
+    	table.setCellSelectionEnabled(true);
+    	ListSelectionModel cellSelectionModel = table.getSelectionModel();
+    	cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-      public void valueChanged(ListSelectionEvent e) {
-        String selectedData = null;
+    	cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+    		public void valueChanged(ListSelectionEvent e) {
+    			String selectedData = null;
 
-        int selectedRow = table.getSelectedRows()[0];
-        int selectedColumns = table.getSelectedColumns()[0];
+    			int selectedRow = table.getSelectedRows()[0];
+    			int selectedColumns = table.getSelectedColumns()[0];
 
-        int tmpi = 0;
-        int tmpj = 0;
-        
-//        for (int i = 0; i < selectedRow.length; i++) {
-//          for (int j = 0; j < selectedColumns.length; j++) {
-//            selectedData = (String) table.getValueAt(selectedRow[i], selectedColumns[j]);
-//            tmpi = i;
-//            tmpj = j;
-//          }
-//          
-//        }
-        selectedData = (String) table.getValueAt(selectedRow, selectedColumns);
-        System.out.println("Selected: " + selectedData + "i and j " + selectedRow + selectedColumns);
-        table.getColumnModel().getColumn(selectedColumns).setCellRenderer(new ColorRenderer());
-
-      }
-
-    });
+    			selectedData = (String) table.getValueAt(selectedRow, selectedColumns);
+    			table.getColumnModel().getColumn(selectedColumns).setCellRenderer(new ColorRenderer());
+    		}
+    	});
     }
     
     // the date data is passed by this method, so the values of year month and day are value of the date that user click 
     public void setDate(int year , int month , int day){
-        System.out.println(month + " " + day + "" + year);
+    
         calendar = new GregorianCalendar(year,month-1,day);
-        System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
-        firstDate = year+"-"+month+"-"+day;
-        firstDateData = getDateData(year+"-"+month+"-"+day);
+        int DayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        calendar.add(Calendar.DATE, -DayOfWeek+2);
         
-        for(int i =0;  i <12;i ++){
-            table.setValueAt( firstDateData.getData()[i],i,1);
-        }
-        table.getColumnModel().getColumn(1).setCellRenderer(new ColorRenderer());
+        for(int i = 1; i < 8;i++){
+        	weekDate[i-1]=  calendar.get(Calendar.YEAR) + "-"+calendar.get(Calendar.MONTH)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+            calendar.add(Calendar.DATE, 1);
+            changeName(i,  weekColumnNames[i] + " " + weekDate[i-1]);
+            weekData[i-1] =  getDateData(weekDate[i-1]);
+            for(int j =0;  j <24;j ++){
+                table.setValueAt( weekData[i-1].getData()[j],j,i);
+            }
+            table.getColumnModel().getColumn(i).setCellRenderer(new ColorRenderer());
+        }    	
     }
     
-    public DateData getDateData(String date){
+    private DateData getDateData(String date){
         StoreData store = new StoreData();
         return store.crunchifyReadFromFile(date);
     }
-
-    @Override
-    public Dimension getPreferredSize()
-    {
-        return (new Dimension(500, 500));
+   
+    public void changeName(int col_index, String col_name){
+    	  table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
     }
 }
 
+
+
+//change the color by this class
+class ColorRenderer extends DefaultTableCellRenderer{
+	@Override
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+		// if the cell is selected then the color should be same as backgorund
+		if (isSelected){
+			setBackground( Color.gray );
+			//         setBackground( Color.gray );
+		}
+		else{
+			setBackground( table.getBackground() );
+
+			try{
+				String boxValue =  value.toString() ;
+				// if the box value equal this then change color to this
+				if (boxValue.equalsIgnoreCase("r"))
+					setBackground( Color.RED );
+				else if (boxValue.equalsIgnoreCase("b"))
+					setBackground( Color.BLUE );
+				
+				else if (boxValue.equalsIgnoreCase("g"))
+					setBackground( Color.GREEN );
+				
+				else if (boxValue.equalsIgnoreCase("y"))
+					setBackground( Color.YELLOW );
+				
+				else if (boxValue.equalsIgnoreCase("o"))
+					setBackground( Color.ORANGE );
+			}
+			catch(Exception e) {}
+		}
+		return this;
+	}
+}
 
 

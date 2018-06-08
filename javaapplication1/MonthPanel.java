@@ -225,9 +225,7 @@ class MonthPanel extends JPanel implements ActionListener {
       
         CardLayout cardLayout = (CardLayout) (contentPanel.getLayout());
         cardLayout.show(contentPanel, "Panel2");
-        weekPanel.buttonText(button.getText());
-        weekPanel.setDate(year,(month+1),Integer.parseInt(button.getText()));
-        
+        weekPanel.setDate(year,(month+1),Integer.parseInt(button.getText()));   
         }
     }
   
