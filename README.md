@@ -4,8 +4,8 @@ USING MAVEN
 In pom.xml file add this dependency 
 
 
-<dependency>
-            /<groupId>com.google.code.gson</groupId>
+&lt;dependency>
+            <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.3</version>
 </dependency>
