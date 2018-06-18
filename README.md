@@ -9,7 +9,7 @@ to use this program you need to:
 
 &lt;dependency>
 <br>
-            &lt;groupId>com.google.code.gson</groupId>
+            &lt;groupId>com.google.code.gson &lt; /groupId>
 <br> 
             &lt;artifactId>gson</artifactId>
             <br>
