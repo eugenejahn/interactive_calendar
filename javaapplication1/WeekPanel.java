@@ -94,7 +94,7 @@ public class WeekPanel extends JPanel{
         returnButton.setSize(10, 10);
         returnButtonListener();
    
-        JTable colorTable = new JTable(new Object[][] {{"","",""},{"","",""}}, new Object[] {"COLOR","NAME","hih"});
+        JTable colorTable = new JTable(new Object[][] {{"RED","SLEEPING","R"},{"BLUE","FREE TIME","B"},{"GREEN","WORK","G"},{"YELLOW","EATING","Y"},{"ORANGE","READING","O"}}, new Object[] {"COLOR","DESCRIPITION","CODE"});
         colorTable.setBackground(Color.cyan);
         JScrollPane colorScrollPane = new JScrollPane(colorTable);
 
@@ -102,7 +102,7 @@ public class WeekPanel extends JPanel{
         // add the week panel into the panel
         add(scrollPane,BorderLayout.WEST);
         add(colorScrollPane,BorderLayout.CENTER);
-       add(returnButton,BorderLayout.EAST); 
+        add(returnButton,BorderLayout.EAST); 
         
         
         
@@ -162,7 +162,11 @@ public class WeekPanel extends JPanel{
     
         calendar = new GregorianCalendar(year,month-1,day);
         int DayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DATE, -DayOfWeek+2);
+        System.out.println(DayOfWeek + "-------------------------");
+        if(DayOfWeek == 1)
+            calendar.add(Calendar.DATE, -6);
+        else   
+            calendar.add(Calendar.DATE, -DayOfWeek+2);
         
         for(int i = 1; i < 8;i++){
         	weekDate[i-1]=  calendar.get(Calendar.YEAR) + "-"+calendar.get(Calendar.MONTH)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
@@ -195,34 +199,62 @@ class ColorRenderer extends DefaultTableCellRenderer{
 		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 		// if the cell is selected then the color should be same as backgorund
-		if (isSelected){
-			setBackground( Color.gray );
-			//         setBackground( Color.gray );
-		}
-		else{
-			setBackground( table.getBackground() );
+                Color setColor;
+                String boxValue =  value.toString() ;
+                System.out.println(column+ "cloumn !!!!!!!!!!");
+                
 
-			try{
-				String boxValue =  value.toString() ;
+		if (isSelected){
+                        
 				// if the box value equal this then change color to this
 				if (boxValue.equalsIgnoreCase("r"))
-					setBackground( Color.RED );
+					setColor = Color.RED ;
 				else if (boxValue.equalsIgnoreCase("b"))
-					setBackground( Color.BLUE );
+					setColor = Color.BLUE ;
 				
 				else if (boxValue.equalsIgnoreCase("g"))
-					setBackground( Color.GREEN );
+					setColor=  Color.GREEN ;
 				
 				else if (boxValue.equalsIgnoreCase("y"))
-					setBackground( Color.YELLOW );
+					setColor =( Color.YELLOW );
 				
 				else if (boxValue.equalsIgnoreCase("o"))
-					setBackground( Color.ORANGE );
-			}
-			catch(Exception e) {}
+					setColor = ( Color.ORANGE );
+                                else
+                                    setColor = table.getSelectionBackground();
+                                
+			setBackground( bleach(setColor,0.8f) );
+			//         setBackground( Color.gray );
 		}
+             
+           else{
+                    if (boxValue.equalsIgnoreCase("r"))
+					setColor = Color.RED ;
+				else if (boxValue.equalsIgnoreCase("b"))
+					setColor = Color.BLUE ;
+				
+				else if (boxValue.equalsIgnoreCase("g"))
+					setColor=  Color.GREEN ;
+				
+				else if (boxValue.equalsIgnoreCase("y"))
+					setColor =( Color.YELLOW );
+				
+				else if (boxValue.equalsIgnoreCase("o"))
+					setColor = ( Color.ORANGE );
+                                else
+                                    setColor = table.getSelectionBackground();
+                                setBackground( setColor );
+                }
 		return this;
 	}
+        
+        public static Color bleach(Color color, float amount)
+        {
+            int red = (int) ((color.getRed() * (1 - amount) / 255 + amount) * 255);
+            int green = (int) ((color.getGreen() * (1 - amount) / 255 + amount) * 255);
+            int blue = (int) ((color.getBlue() * (1 - amount) / 255 + amount) * 255);
+            return new Color(red, green, blue);
+        }
 }
 
 
