@@ -1,8 +1,9 @@
 # interactive_calendar
+The interactive calendar is a organization based calendar that allows the user(you) to add activites that you have done and it can color code those activities. It can also be used as a regular calendar to put dates in the future.
 
-this is the readme 
+ 
 to use this program you need to:
-1. Create a Maven file.
+1. Create a Maven file of a sort, NetBeans is the application we used.
 2. copy the javaaplication1 package to the Source package
 3. And the following text into the pom.xml file below &lt;properties> but inside &lt;project>
 
