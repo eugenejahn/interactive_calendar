@@ -11,9 +11,9 @@ to use this program you need to:
 <br>
             &lt;groupId>com.google.code.gson &lt; /groupId>
 <br> 
-            &lt;artifactId>gson</artifactId>
+            &lt;artifactId>gson &lt; /artifactId>
             <br>
-            &lt;version>2.3</version>
+            &lt;version>2.3 &lt; /version>
             <br>
 &lt;/dependency>
 
