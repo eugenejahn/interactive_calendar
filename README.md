@@ -4,7 +4,7 @@ this is the readme
 to use this program you need to:
 1. Create a Maven file.
 2. copy the javaaplication1 package to the Source package
-3. And the following text into the pom.xml file
+3. And the following text into the pom.xml file below &lt;properties> but inside &lt;project>
 
 
 &lt;dependencies>
