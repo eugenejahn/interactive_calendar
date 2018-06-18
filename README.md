@@ -19,3 +19,6 @@ to use this program you need to:
 
 
 > Compile file and you can run the main. 
+
+![alt text](https://github.com/rooseveltcs/interactive_calendar/blob/master/1.PNG)
+![alt text](https://github.com/rooseveltcs/interactive_calendar/blob/master/2.PNG)
