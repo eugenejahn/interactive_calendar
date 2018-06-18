@@ -7,15 +7,19 @@ to use this program you need to:
 3. And the following text into the pom.xml file
 
 
+&lt;dependencies>
+<br>
 &lt;dependency>
 <br>
-            &lt;groupId>com.google.code.gson &lt; /groupId>
+            &lt;groupId>com.google.code.gson &lt;/groupId>
 <br> 
-            &lt;artifactId>gson &lt; /artifactId>
+            &lt;artifactId>gson &lt;/artifactId>
             <br>
-            &lt;version>2.3 &lt; /version>
+            &lt;version>2.3 &lt;/version>
             <br>
 &lt;/dependency>
+<br>
+&lt;/dependencies>
 
 
 > Compile file and you can run the main. 
