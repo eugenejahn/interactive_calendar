@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -26,6 +28,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -78,33 +81,47 @@ public class WeekPanel extends JPanel{
         
         table = new JTable(weekRowData, weekColumnNames);
         table.setRowHeight(25);
-        table.setPreferredSize(new Dimension(800,650));
+        table.setMinimumSize(new Dimension(800,650));
         table.setBackground(Color.LIGHT_GRAY);
   
-        tableListener();
+        recordTableListener();
    
         JScrollPane scrollPane = new JScrollPane(table);
         
-        scrollPane.setPreferredSize(new Dimension(800,650));
+        scrollPane.setMinimumSize(new Dimension(800,800));
     
         contentPane = panel;
 
         returnButton = new JButton ("Return");
-        buttonText("Return");
+        buttonText("Return & Save");
         returnButton.setSize(10, 10);
         returnButtonListener();
-   
-        JTable colorTable = new JTable(new Object[][] {{"RED","SLEEPING","R"},{"BLUE","FREE TIME","B"},{"GREEN","WORK","G"},{"YELLOW","EATING","Y"},{"ORANGE","READING","O"}}, new Object[] {"COLOR","DESCRIPITION","CODE"});
-        colorTable.setBackground(Color.cyan);
+        
+       
+        String[][] data = { { "Color", "Name", "First Letter" },{"RED","SLEEPING","R"},{"BLUE","FREE TIME","B"},{"GREEN","WORK","G"},{"YELLOW","EATING","Y"},{"ORANGE","READING","O"} };
+        String[] col = { "", "","" };
+        final DefaultTableModel model = new DefaultTableModel(data, col);
+        JTable colorTable = new JTable(model);
+        JButton addRow = new JButton("Add Row");
+        addRow.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                model.addRow(new Object[] {});
+                }
+            });
+        
+        
+        JPanel panelTable = new JPanel(new BorderLayout());
         JScrollPane colorScrollPane = new JScrollPane(colorTable);
+        panelTable.add(colorScrollPane);
+        panelTable.add(addRow, BorderLayout.SOUTH);
+        colorTableListener(colorTable);
 
         
         // add the week panel into the panel
-        add(scrollPane,BorderLayout.WEST);
-        add(colorScrollPane,BorderLayout.CENTER);
+        add(new JScrollPane(table),BorderLayout.WEST);
+        add(panelTable,BorderLayout.CENTER);
         add(returnButton,BorderLayout.EAST); 
-        
-        
+               
         
     }
     
@@ -139,7 +156,7 @@ public class WeekPanel extends JPanel{
     }
     
     // it is the litener and changes the color of the cell
-    private void tableListener(){
+    private void recordTableListener(){
     	table.setCellSelectionEnabled(true);
     	ListSelectionModel cellSelectionModel = table.getSelectionModel();
     	cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -153,6 +170,28 @@ public class WeekPanel extends JPanel{
 
     			selectedData = (String) table.getValueAt(selectedRow, selectedColumns);
     			table.getColumnModel().getColumn(selectedColumns).setCellRenderer(new ColorRenderer());
+    		}
+    	});
+    }
+    
+    
+    private void colorTableListener(JTable colorTable){
+    	colorTable.setCellSelectionEnabled(true);
+    	ListSelectionModel cellSelectionModel = colorTable.getSelectionModel();
+    	cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+    	cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+    		public void valueChanged(ListSelectionEvent e) {
+    			String selectedData = null;
+
+    			int selectedRow = colorTable.getSelectedRows()[0];
+    			int selectedColumns = colorTable.getSelectedColumns()[0];
+                        if(selectedColumns == 0){
+                            Color background = JColorChooser.showDialog(null, "Change Button Background", Color.WHITE);
+                             colorTable.setValueAt(String.valueOf(background.getRGB()), selectedRow,selectedColumns);
+                        }
+                       
+    			
     		}
     	});
     }

@@ -1,28 +1,4 @@
-
-// public class AddRow {
-//   public static void main(String[] argv) throws Exception {
-//     DefaultTableModel model = new DefaultTableModel();
-//      
-//     model.addColumn("Color");
-//     model.addColumn("Name");
-//     model.addColumn("Extra");
-// 
-//     JTable table = new JTable(model);
-//     
-//     JButton b = new JButton("Add Row");
-//     
-// 
-//     model = (DefaultTableModel) table.getModel();
-//     model.addRow(new Object[]{"", "", ""});
-//     JFrame f = new JFrame();
-//     f.add(table);
-//     f.add(b, BorderLayout.SOUTH);
-//     f.setSize(300, 300);
-//     f.add(new JScrollPane(table));
-//     f.setVisible(true);
-// 
-//   }
-// }
+package javaapplication1;
 
 
 import java.awt.Component;
